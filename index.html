@@ -106,12 +106,12 @@
             border-radius: 10px;
         }
 
-        input::placeholder {
+        input::placeholder, textarea::placeholder {
             color: #4b5563;
             font-size: 0.9rem;
         }
 
-        #urlInput:focus {
+        #urlInput:focus, #commentInput:focus, #nameInput:focus, #adminPass:focus {
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
         }
 
@@ -270,9 +270,924 @@
             border-top: 1px solid rgba(255,255,255,0.05);
             margin-top: 16px;
         }
+
+        /* ===== INFO PANEL STYLES ===== */
+        .info-trigger {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 50;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+        
+        .info-trigger:hover {
+            background: rgba(30, 30, 30, 0.95);
+            color: #3b82f6;
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+        
+        .info-trigger.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            transform: rotate(180deg);
+            border-color: transparent;
+        }
+
+        .info-panel {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            z-index: 49;
+            width: 340px;
+            max-width: calc(100vw - 48px);
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 24px;
+            padding: 0;
+            overflow: hidden;
+            transform: translateY(-20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 80px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .info-panel.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .info-panel-header {
+            position: relative;
+            padding: 28px 24px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.1) 0%, transparent 100%);
+        }
+        
+        .info-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 22px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 8px 32px -8px rgba(59, 130, 246, 0.5);
+            position: relative;
+        }
+        
+        .info-avatar::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 25px;
+            padding: 3px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.6;
+        }
+        
+        .info-panel-header h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 4px;
+            letter-spacing: -0.02em;
+        }
+        
+        .info-panel-header p {
+            font-size: 0.8rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .info-panel-body {
+            padding: 0 24px 24px;
+        }
+        
+        .info-section {
+            margin-bottom: 20px;
+        }
+        
+        .info-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-section-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #3b82f6;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(59,130,246,0.3), transparent);
+        }
+        
+        .info-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(59, 130, 246, 0.15);
+            transform: translateX(4px);
+        }
+        
+        .info-card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .info-card-content h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #e5e7eb;
+            margin-bottom: 2px;
+        }
+        
+        .info-card-content p {
+            font-size: 0.75rem;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+        
+        .info-socials {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        
+        .info-social {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .info-social:hover {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -5px rgba(59, 130, 246, 0.4);
+        }
+        
+        .info-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #60a5fa;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        
+        .info-tag i {
+            font-size: 0.6rem;
+        }
+        
+        .info-panel-footer {
+            padding: 14px 24px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
+        }
+        
+        .info-panel-footer p {
+            font-size: 0.65rem;
+            color: #4b5563;
+            letter-spacing: 0.05em;
+        }
+        
+        .info-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            z-index: 48;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        
+        .info-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @keyframes infoPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0); }
+        }
+        
+        .info-trigger.pulse {
+            animation: infoPulse 2s infinite;
+        }
+
+        /* ===== RATING TOGGLE BUTTON ===== */
+        .rating-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-bottom: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rating-toggle-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.05), rgba(245, 158, 11, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .rating-toggle-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .rating-toggle-btn:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .rating-toggle-btn.active {
+            background: rgba(251, 191, 36, 0.08);
+            border-color: rgba(251, 191, 36, 0.25);
+        }
+        
+        .rating-toggle-btn i {
+            font-size: 1.2rem;
+            color: #fbbf24;
+            transition: transform 0.4s ease;
+        }
+        
+        .rating-toggle-btn.active i {
+            transform: rotate(180deg);
+        }
+        
+        .rating-toggle-text {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+        
+        .rating-toggle-stars {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .rating-toggle-stars i {
+            font-size: 0.7rem;
+            color: #fbbf24;
+        }
+        
+        .rating-toggle-count {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .rating-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .rating-content.open {
+            max-height: 2000px;
+            opacity: 1;
+            margin-top: 16px;
+        }
+
+        /* ===== RATING & COMMENT STYLES ===== */
+        .rating-section {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+        
+        .rating-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .rating-header h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rating-header h3 i {
+            color: #fbbf24;
+        }
+        
+        .rating-summary {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+        
+        .rating-big-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+        
+        .rating-big-stars {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 4px;
+        }
+        
+        .rating-big-stars i {
+            font-size: 0.9rem;
+            color: #fbbf24;
+        }
+        
+        .rating-count {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        .rating-bars {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .rating-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rating-bar-label {
+            font-size: 0.7rem;
+            color: #6b7280;
+            font-weight: 600;
+            width: 20px;
+            text-align: right;
+        }
+        
+        .rating-bar-track {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .rating-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .rating-form {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .star-rating-input {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+        
+        .star-rating-input i {
+            font-size: 1.8rem;
+            color: rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .star-rating-input i.hovered,
+        .star-rating-input i.selected {
+            color: #fbbf24;
+            text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+            transform: scale(1.15);
+        }
+        
+        .star-rating-input i:hover {
+            transform: scale(1.25);
+        }
+        
+        .rating-input-group {
+            margin-bottom: 12px;
+        }
+        
+        .rating-input-group input,
+        .rating-input-group textarea {
+            width: 100%;
+            background: rgba(22, 22, 22, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 12px 16px;
+            color: white;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        .rating-input-group input:focus,
+        .rating-input-group textarea:focus {
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+        
+        .rating-input-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn-submit-rating {
+            width: 100%;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #0f0f0f;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-submit-rating:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.3);
+        }
+        
+        .btn-submit-rating:active {
+            transform: scale(0.98);
+        }
+        
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .review-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.4s ease forwards;
+            position: relative;
+        }
+        
+        .review-item:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+            transform: translateX(4px);
+        }
+        
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .review-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .review-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .review-name-time {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .review-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+        
+        .review-time {
+            font-size: 0.7rem;
+            color: #4b5563;
+        }
+        
+        .review-stars {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .review-stars i {
+            font-size: 0.7rem;
+            color: #fbbf24;
+        }
+        
+        .review-stars i.empty {
+            color: rgba(255,255,255,0.08);
+        }
+        
+        .review-text {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            line-height: 1.5;
+            padding-left: 46px;
+        }
+        
+        .review-like-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            margin-left: 46px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            font-size: 0.75rem;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .review-like-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+        
+        .review-like-btn.liked {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+        
+        .review-like-btn.liked i {
+            animation: heartBeat 0.4s ease;
+        }
+        
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* ===== ADMIN DELETE BUTTON ===== */
+        .admin-delete-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+        
+        .review-item:hover .admin-delete-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .admin-delete-btn:hover {
+            background: rgba(239, 68, 68, 0.25);
+            transform: scale(1.1);
+        }
+
+        /* ===== ADMIN LOGIN PANEL ===== */
+        .admin-trigger {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 50;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #4b5563;
+            font-size: 0.9rem;
+        }
+        
+        .admin-trigger:hover {
+            background: rgba(30, 30, 30, 0.9);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        
+        .admin-trigger.logged-in {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-color: transparent;
+        }
+
+        .admin-login-panel {
+            position: fixed;
+            bottom: 76px;
+            right: 24px;
+            z-index: 49;
+            width: 280px;
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px;
+            transform: translateY(20px) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 25px 80px -20px rgba(0,0,0,0.9);
+        }
+        
+        .admin-login-panel.open {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .admin-login-panel h4 {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-login-panel h4 i {
+            color: #ef4444;
+        }
+        
+        .admin-login-panel input {
+            width: 100%;
+            background: rgba(22, 22, 22, 0.8);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: white;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-login-panel input:focus {
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        
+        .admin-login-panel button {
+            width: 100%;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-login-panel button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px -5px rgba(239, 68, 68, 0.4);
+        }
+        
+        .admin-status {
+            font-size: 0.75rem;
+            color: #6b7280;
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .admin-status span {
+            color: #22c55e;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body class="bg-grid flex items-center justify-center min-h-screen p-4 sm:p-8">
+
+    <!-- Info Trigger Button -->
+    <button id="infoTrigger" class="info-trigger pulse" onclick="toggleInfoPanel()" aria-label="Informasi Website">
+        <i class="fas fa-info"></i>
+    </button>
+
+    <!-- Info Backdrop -->
+    <div id="infoBackdrop" class="info-backdrop" onclick="toggleInfoPanel()"></div>
+
+    <!-- Info Panel -->
+    <div id="infoPanel" class="info-panel">
+        <div class="info-panel-header">
+            <div class="info-avatar">
+                <i class="fas fa-code"></i>
+            </div>
+            <h3>Nabil Assihidiqi</h3>
+            <p>Full-Stack Developer</p>
+        </div>
+        
+        <div class="info-panel-body">
+            <!-- About Website -->
+            <div class="info-section">
+                <div class="info-section-label">Tentang Website</div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="info-card-content">
+                        <h4>SaveTik</h4>
+                        <p>Platform download video TikTok tanpa watermark dengan kualitas HD. Cepat, aman, dan tanpa login.</p>
+                    </div>
+                </div>
+                <div style="margin-top: 8px; display: flex; flex-wrap: wrap;">
+                    <span class="info-tag"><i class="fas fa-check"></i> No Watermark</span>
+                    <span class="info-tag"><i class="fas fa-check"></i> HD Quality</span>
+                    <span class="info-tag"><i class="fas fa-check"></i> Gratis</span>
+                    <span class="info-tag"><i class="fas fa-check"></i> Aman</span>
+                </div>
+            </div>
+            
+            <!-- Developer Info -->
+            <div class="info-section">
+                <div class="info-section-label">Developer</div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="info-card-content">
+                        <h4>Nabil Assihidiqi</h4>
+                        <p>Pengembang web & mobile application. Fokus pada pengalaman pengguna yang modern dan intuitif.</p>
+                    </div>
+                </div>
+                <div class="info-socials" style="margin-top: 10px;">
+                    <a href="https://github.com/" target="_blank" class="info-social" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://t.me/NabilOfficialShopp" target="_blank" class="info-social" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="https://tiktok.com/@" target="_blank" class="info-social" title="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="mailto:anakselatan34@gmail.com" class="info-social" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Tech Stack -->
+            <div class="info-section">
+                <div class="info-section-label">Teknologi</div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <span class="info-tag"><i class="fab fa-html5"></i> HTML5</span>
+                    <span class="info-tag"><i class="fab fa-css3-alt"></i> Tailwind CSS</span>
+                    <span class="info-tag"><i class="fab fa-js"></i> JavaScript</span>
+                    <span class="info-tag"><i class="fas fa-server"></i> API</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-panel-footer">
+            <p>© 2026 SaveTik • Dibuat dengan <i class="fas fa-heart" style="color: #ef4444; font-size: 0.6rem;"></i> oleh Nabil</p>
+        </div>
+    </div>
+
+    <!-- Admin Trigger -->
+    <button id="adminTrigger" class="admin-trigger" onclick="toggleAdminPanel()" title="Admin Panel">
+        <i class="fas fa-shield-alt"></i>
+    </button>
+
+    <!-- Admin Login Panel -->
+    <div id="adminLoginPanel" class="admin-login-panel">
+        <h4><i class="fas fa-lock"></i> Admin Login</h4>
+        <input type="password" id="adminPass" placeholder="Masukkan password..." onkeypress="if(event.key==='Enter')loginAdmin()">
+        <button onclick="loginAdmin()">Login</button>
+        <div class="admin-status" id="adminStatus">Status: <span>User Biasa</span></div>
+    </div>
 
     <!-- Background Glows -->
     <div id="mainGlow" class="glow top-10 left-10"></div>
@@ -362,6 +1277,86 @@
             <div id="content" class="hidden space-y-6"></div>
         </div>
 
+        <!-- ===== RATING TOGGLE BUTTON ===== -->
+        <button class="rating-toggle-btn" id="ratingToggleBtn" onclick="toggleRatingSection()">
+            <i class="fas fa-star"></i>
+            <span class="rating-toggle-text">Ulasan & Rating</span>
+            <div class="rating-toggle-stars" id="toggleStars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <span class="rating-toggle-count" id="toggleCount">0 ulasan</span>
+        </button>
+
+        <!-- ===== RATING CONTENT (Hidden by default) ===== -->
+        <div class="rating-content" id="ratingContent">
+            <div class="rating-section">
+                <!-- Rating Summary -->
+                <div class="rating-summary">
+                    <div>
+                        <div class="rating-big-number" id="avgRating">0.0</div>
+                        <div class="rating-big-stars" id="summaryStars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="rating-count" id="totalReviewsText">0 ulasan</div>
+                    </div>
+                    <div class="rating-bars" id="ratingBars">
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">5</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="5"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">4</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="4"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">3</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="3"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">2</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="2"></div></div>
+                        </div>
+                        <div class="rating-bar-row">
+                            <span class="rating-bar-label">1</span>
+                            <div class="rating-bar-track"><div class="rating-bar-fill" style="width: 0%" data-star="1"></div></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rating Form -->
+                <div class="rating-form">
+                    <div class="star-rating-input" id="starRatingInput">
+                        <i class="fas fa-star" data-value="1" onclick="setRating(1)" onmouseenter="hoverRating(1)" onmouseleave="resetHover()"></i>
+                        <i class="fas fa-star" data-value="2" onclick="setRating(2)" onmouseenter="hoverRating(2)" onmouseleave="resetHover()"></i>
+                        <i class="fas fa-star" data-value="3" onclick="setRating(3)" onmouseenter="hoverRating(3)" onmouseleave="resetHover()"></i>
+                        <i class="fas fa-star" data-value="4" onclick="setRating(4)" onmouseenter="hoverRating(4)" onmouseleave="resetHover()"></i>
+                        <i class="fas fa-star" data-value="5" onclick="setRating(5)" onmouseenter="hoverRating(5)" onmouseleave="resetHover()"></i>
+                    </div>
+                    <div class="rating-input-group">
+                        <input type="text" id="nameInput" placeholder="Nama kamu..." maxlength="30">
+                    </div>
+                    <div class="rating-input-group">
+                        <textarea id="commentInput" placeholder="Bagikan pengalaman kamu menggunakan SaveTik..." maxlength="300"></textarea>
+                    </div>
+                    <button class="btn-submit-rating" onclick="submitReview()">
+                        <i class="fas fa-paper-plane"></i>
+                        Kirim Ulasan
+                    </button>
+                </div>
+                
+                <!-- Reviews List -->
+                <div class="reviews-list" id="reviewsList"></div>
+            </div>
+        </div>
+
         <!-- Footer -->
         <footer id="mainFooter" class="mt-8 pt-6 border-t border-white/5">
             <p class="text-center text-[10px] text-gray-600 uppercase tracking-[0.2em] mb-4">
@@ -404,8 +1399,353 @@
     <script>
         let currentMode = 'tiktok';
         let currentData = null;
+        let infoPanelOpen = false;
+        let adminPanelOpen = false;
+        let isAdmin = false;
+        let selectedRating = 0;
+        let reviews = [];
         
         const API_TIKTOK = 'https://www.tikwm.com/api/';
+        const ADMIN_PASSWORD = 'nabil123'; // Ganti password ini!
+
+        // Demo reviews data
+        const demoReviews = [
+            {
+                id: 1,
+                name: 'Ahmad Rizky',
+                rating: 5,
+                text: 'Website ini sangat membantu! Download video TikTok jadi super cepat dan kualitasnya HD banget. Recommended!',
+                time: '10 hari lalu',
+                likes: 995,
+                liked: false
+            },
+            {
+                id: 2,
+                name: 'Siti Nurhaliza',
+                rating: 5,
+                text: 'Desainnya keren dan modern. Gampang banget dipakai, cuma paste link langsung bisa download. Mantap!',
+                time: '20 hari lalu',
+                likes: 2000,
+                liked: false
+            }
+        ];
+
+        function initReviews() {
+            const saved = localStorage.getItem('savetik_reviews');
+            if (saved) {
+                reviews = JSON.parse(saved);
+            } else {
+                reviews = [...demoReviews];
+                saveReviews();
+            }
+            renderReviews();
+            updateRatingSummary();
+            updateToggleButton();
+        }
+
+        function saveReviews() {
+            localStorage.setItem('savetik_reviews', JSON.stringify(reviews));
+        }
+
+        function toggleRatingSection() {
+            const content = document.getElementById('ratingContent');
+            const btn = document.getElementById('ratingToggleBtn');
+            
+            content.classList.toggle('open');
+            btn.classList.toggle('active');
+        }
+
+        function updateToggleButton() {
+            const total = reviews.length;
+            const avg = total > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / total).toFixed(1) : '0.0';
+            const roundedAvg = Math.round(parseFloat(avg));
+            
+            document.getElementById('toggleCount').textContent = `${total} ulasan`;
+            
+            const stars = document.getElementById('toggleStars');
+            stars.innerHTML = Array(5).fill(0).map((_, i) => 
+                `<i class="fas fa-star" style="color: ${i < roundedAvg ? '#fbbf24' : 'rgba(255,255,255,0.1)'}"></i>`
+            ).join('');
+        }
+
+        // ===== ADMIN FUNCTIONS =====
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminLoginPanel');
+            adminPanelOpen = !adminPanelOpen;
+            
+            if (adminPanelOpen) {
+                panel.classList.add('open');
+            } else {
+                panel.classList.remove('open');
+            }
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('adminPass').value;
+            const trigger = document.getElementById('adminTrigger');
+            const status = document.getElementById('adminStatus');
+            
+            if (pass === ADMIN_PASSWORD) {
+                isAdmin = true;
+                trigger.classList.add('logged-in');
+                trigger.innerHTML = '<i class="fas fa-user-shield"></i>';
+                status.innerHTML = 'Status: <span>User Admin</span>';
+                document.getElementById('adminPass').value = '';
+                showToast('Login admin berhasil!', 'success');
+                renderReviews(); // Re-render to show delete buttons
+                setTimeout(toggleAdminPanel, 800);
+            } else {
+                showToast('Password salah!', 'error');
+                document.getElementById('adminPass').value = '';
+            }
+        }
+
+        function deleteReview(reviewId) {
+            if (!isAdmin) return;
+            
+            if (confirm('Yakin hapus ulasan ini?')) {
+                reviews = reviews.filter(r => r.id !== reviewId);
+                saveReviews();
+                renderReviews();
+                updateRatingSummary();
+                updateToggleButton();
+                showToast('Ulasan dihapus', 'success');
+            }
+        }
+
+        function toggleInfoPanel() {
+            const panel = document.getElementById('infoPanel');
+            const backdrop = document.getElementById('infoBackdrop');
+            const trigger = document.getElementById('infoTrigger');
+            
+            infoPanelOpen = !infoPanelOpen;
+            
+            if (infoPanelOpen) {
+                panel.classList.add('open');
+                backdrop.classList.add('open');
+                trigger.classList.add('active');
+                trigger.classList.remove('pulse');
+            } else {
+                panel.classList.remove('open');
+                backdrop.classList.remove('open');
+                trigger.classList.remove('active');
+            }
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (infoPanelOpen) toggleInfoPanel();
+                if (adminPanelOpen) toggleAdminPanel();
+            }
+        });
+
+        function hoverRating(value) {
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.add('hovered');
+                } else {
+                    star.classList.remove('hovered');
+                }
+            });
+        }
+
+        function resetHover() {
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach(star => {
+                star.classList.remove('hovered');
+            });
+        }
+
+        function setRating(value) {
+            selectedRating = value;
+            const stars = document.querySelectorAll('#starRatingInput i');
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+        }
+
+        function submitReview() {
+            const name = document.getElementById('nameInput').value.trim();
+            const comment = document.getElementById('commentInput').value.trim();
+            
+            if (selectedRating === 0) {
+                showToast('Pilih rating bintang dulu!', 'warning');
+                return;
+            }
+            if (!name) {
+                document.getElementById('nameInput').focus();
+                return;
+            }
+            if (!comment) {
+                document.getElementById('commentInput').focus();
+                return;
+            }
+
+            const newReview = {
+                id: Date.now(),
+                name: name,
+                rating: selectedRating,
+                text: comment,
+                time: 'Baru saja',
+                likes: 0,
+                liked: false
+            };
+
+            reviews.unshift(newReview);
+            saveReviews();
+            renderReviews();
+            updateRatingSummary();
+            updateToggleButton();
+
+            // Reset form
+            document.getElementById('nameInput').value = '';
+            document.getElementById('commentInput').value = '';
+            setRating(0);
+            
+            showToast('Ulasan berhasil dikirim! Terima kasih ⭐', 'success');
+        }
+
+        function toggleLike(reviewId) {
+            const review = reviews.find(r => r.id === reviewId);
+            if (review) {
+                review.liked = !review.liked;
+                review.likes += review.liked ? 1 : -1;
+                saveReviews();
+                renderReviews();
+            }
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviewsList');
+            if (reviews.length === 0) {
+                list.innerHTML = '<p class="text-center text-gray-600 text-sm py-8">Belum ada ulasan. Jadilah yang pertama!</p>';
+                return;
+            }
+
+            list.innerHTML = reviews.map(review => {
+                const stars = Array(5).fill(0).map((_, i) => 
+                    `<i class="fas fa-star ${i < review.rating ? '' : 'empty'}"></i>`
+                ).join('');
+
+                const deleteBtn = isAdmin ? 
+                    `<button class="admin-delete-btn" onclick="deleteReview(${review.id})" title="Hapus ulasan">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>` : '';
+
+                return `
+                    <div class="review-item">
+                        ${deleteBtn}
+                        <div class="review-header">
+                            <div class="review-user">
+                                <div class="review-avatar">${review.name.charAt(0).toUpperCase()}</div>
+                                <div class="review-name-time">
+                                    <span class="review-name">${escapeHtml(review.name)}</span>
+                                    <span class="review-time">${review.time}</span>
+                                </div>
+                            </div>
+                            <div class="review-stars">${stars}</div>
+                        </div>
+                        <p class="review-text">${escapeHtml(review.text)}</p>
+                        <button class="review-like-btn ${review.liked ? 'liked' : ''}" onclick="toggleLike(${review.id})">
+                            <i class="${review.liked ? 'fas' : 'far'} fa-heart"></i>
+                            <span>${review.likes}</span>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateRatingSummary() {
+            const total = reviews.length;
+            const avg = total > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / total).toFixed(1) : '0.0';
+            
+            document.getElementById('avgRating').textContent = avg;
+            document.getElementById('totalReviewsText').textContent = `${total} ulasan`;
+
+            const summaryStars = document.getElementById('summaryStars');
+            const roundedAvg = Math.round(parseFloat(avg));
+            summaryStars.innerHTML = Array(5).fill(0).map((_, i) => 
+                `<i class="fas fa-star" style="color: ${i < roundedAvg ? '#fbbf24' : 'rgba(255,255,255,0.1)'}"></i>`
+            ).join('');
+
+            const counts = {1:0, 2:0, 3:0, 4:0, 5:0};
+            reviews.forEach(r => counts[r.rating]++);
+            
+            document.querySelectorAll('.rating-bar-fill').forEach(bar => {
+                const star = parseInt(bar.dataset.star);
+                const pct = total > 0 ? (counts[star] / total * 100) : 0;
+                bar.style.width = pct + '%';
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showToast(message, type) {
+            const existing = document.querySelector('.toast-notification');
+            if (existing) existing.remove();
+
+            const colors = {
+                success: 'linear-gradient(135deg, #22c55e, #16a34a)',
+                error: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                warning: 'linear-gradient(135deg, #f59e0b, #d97706)'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%) translateY(20px);
+                background: ${colors[type] || colors.warning};
+                color: white;
+                font-weight: 700;
+                font-size: 0.85rem;
+                padding: 14px 24px;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+                z-index: 200;
+                opacity: 0;
+                transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                white-space: nowrap;
+            `;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type] || icons.warning}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
 
         function switchTab(mode) {
             currentMode = mode;
@@ -606,14 +1946,12 @@
             const playCount = data.play_count || 0;
             const duration = data.duration || 0;
 
-            // Format duration
             const mins = Math.floor(duration / 60);
             const secs = duration % 60;
             const durationStr = `${mins}:${secs.toString().padStart(2, '0')}`;
 
             content.innerHTML = `
                 <div class="result-card">
-                    <!-- Video Player -->
                     <div class="video-container relative aspect-video bg-black">
                         <video 
                             id="previewVideo"
@@ -623,7 +1961,6 @@
                             preload="metadata"
                         ></video>
                         
-                        <!-- Play/Pause Overlay -->
                         <div id="videoOverlay" class="video-overlay" style="opacity: 1;">
                             <div class="play-btn" onclick="toggleVideo()">
                                 <svg id="playIcon" class="w-6 h-6 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
@@ -635,7 +1972,6 @@
                             </div>
                         </div>
                         
-                        <!-- Video Controls -->
                         <div class="video-controls">
                             <span class="text-white text-xs font-medium" id="timeDisplay">0:00/${durationStr}</span>
                             <div class="progress-bar">
@@ -652,14 +1988,12 @@
                         </div>
                     </div>
                     
-                    <!-- Title & Author -->
                     <div class="p-5">
                         <h3 class="text-white font-bold text-base leading-snug mb-2 line-clamp-2">${title}</h3>
                         <a href="https://tiktok.com/@${authorId}" target="_blank" class="text-blue-400 text-sm font-medium hover:underline">
                             @${authorId}
                         </a>
                         
-                        <!-- Stats Grid -->
                         <div class="stats-grid">
                             <div>
                                 <div class="text-gray-500 text-[10px] uppercase tracking-wider font-semibold mb-1">Likes</div>
@@ -676,7 +2010,6 @@
                         </div>
                     </div>
                     
-                    <!-- Download Buttons -->
                     <div class="px-5 pb-5 space-y-3">
                         <a href="${play}" target="_blank" download class="block w-full download-btn-green text-white font-extrabold text-base py-4 rounded-2xl text-center flex items-center justify-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -701,7 +2034,6 @@
                 </div>
             `;
 
-            // Setup video player
             setupVideoPlayer();
         }
 
@@ -761,6 +2093,9 @@
         document.getElementById('urlInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') handleDownload();
         });
+
+        // Initialize
+        initReviews();
     </script>
 </body>
 </html>
